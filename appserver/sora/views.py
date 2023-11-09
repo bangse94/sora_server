@@ -134,6 +134,7 @@ class UpdateUserInfo(APIView):
                     return Response(dict(msg="이미 가입 된 이메일입니다."))
                 else:
                     user.email = request.data[item]
+                    #return Response(dict(state="success", msg="사용자 정보 수정에 성공했습니다."))
             elif item == "user_pw":
                 user.user_pw = make_password(request.data[item])
             elif item == "phone_number":
@@ -161,7 +162,8 @@ class UpdateUserInfo(APIView):
         serializer = UserSerializer(user, data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(data=UserSerializer(user).data)
+            print(UserSerializer(user).data)
+            return Response(dict(data=UserSerializer(user).data, msg="사용자 정보 수정에 성공했습니다.", state="success"))
         return Response(serializer.errors)
     
 class DeleteUserInfo(APIView):
